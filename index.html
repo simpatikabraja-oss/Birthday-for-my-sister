@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Teh Ia!</title>
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <audio id="sfx-klik" src="klik.mp3"></audio>
+    <audio id="lagu-ultah" src="braja.mp3" loop></audio>
+
+    <div id="loading" class="container active">
+        <div class="big-text" style="font-size: 2rem;">Tunggu bentar...</div>
+    </div>
+
+    <div id="countdown" class="container">
+        <div id="angka-count" class="big-text">3</div>
+    </div>
+
+    <div id="main-content" class="container">
+        
+        <img src="yulia.jpg" alt="yulia" class="photo-frame" id="foto">
+        
+        <button id="tombol-buka" class="pulse">Buka Pesan 💌</button>
+        
+        <div id="form-umur" class="hidden">
+            <p style="margin-bottom: 15px; font-size: 1.2rem;">bentar, umur teteh sekarang berapa nih? 👀</p>
+            <input type="number" id="input-umur" placeholder="Ketik angka..." min="1">
+            <br>
+            <button id="tombol-lanjut">Lanjut ✨</button>
+        </div>
+        
+        <h1 id="judul"></h1>
+        
+        <div id="pesan-wrapper" class="hidden">
+            <div class="pesan-teks">Selamat Ulang Tahun! 🎉</div>
+            <div class="pesan-teks">Selamat bertambah umur, Teh Ia! 🎈
+Semoga kebahagiaan selalu ngelilingin Teteh dan Caca setiap hari. Apapun fase hidup yang lagi Teteh lewatin sekarang, percayalah Teteh nggak pernah sendirian. Keluarga bakal selalu jadi tempat Teteh pulang.
+Semoga makin sukses, makin bersinar, dan apa yang dicita-citakan segera terwujud. Amin! 🌟.</div>
+            <div class="pesan-teks">Semoga teteh rajin solat dan selalu berdoa kepada allah agar dilancarkan urusanya. <b>SEMOGA MAKIN SUKSES</b>!</div>
+            <div class="pesan-teks quote">"Hari ini adalah awal dari petualangan 365 hari barumu. Make it count!" ✨</div>
+        </div>
+
+        <button id="tombol-replay" class="hidden">Lihat Lagi 🔄</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

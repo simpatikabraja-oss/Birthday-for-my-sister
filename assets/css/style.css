@@ -318,6 +318,17 @@ button:disabled {
     background: linear-gradient(110deg, var(--accent-bright), #d6a0f4);
 }
 
+#tombol-lanjut {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+#tombol-lanjut.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 #preview-panel,
 #birthday-output {
     width: min(100%, 560px);

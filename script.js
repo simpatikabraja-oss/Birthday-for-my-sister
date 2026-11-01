@@ -61,6 +61,7 @@ let details = null;
 lagu.volume = 0.45;
 document.body.classList.toggle('reduce-effects', !animationsEnabled);
 updateAnimationButton();
+updateRevealButton();
 
 inputNama.addEventListener('input', () => inputNama.setCustomValidity(''));
 inputUmur.addEventListener('input', () => inputUmur.setCustomValidity(''));
@@ -339,7 +340,26 @@ function loadTurnstileScript() {
 }
 
 function updateRevealButton() {
-    tombolLanjut.disabled = isSubmitting || !persetujuanData.checked || !captchaToken;
+    const canReveal = persetujuanData.checked && !!captchaToken && !isSubmitting;
+    tombolLanjut.disabled = !canReveal;
+
+    if (!canReveal) {
+        tombolLanjut.classList.remove('is-visible');
+        tombolLanjut.classList.add('hidden');
+        return;
+    }
+
+    if (tombolLanjut.classList.contains('hidden')) {
+        tombolLanjut.classList.remove('hidden');
+        requestAnimationFrame(() => {
+            if (persetujuanData.checked && captchaToken && !isSubmitting) {
+                tombolLanjut.classList.add('is-visible');
+            }
+        });
+        return;
+    }
+
+    tombolLanjut.classList.add('is-visible');
 }
 
 function updateMusicButton() {

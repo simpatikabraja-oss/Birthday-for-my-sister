@@ -1,0 +1,5 @@
+{
+  "livePreview.defaultPreviewPath": "/index.html",
+  "deno.enable": true,
+  "deno.enablePaths": ["./supabase/functions/birthday-submit"]
+}

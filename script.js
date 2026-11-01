@@ -78,7 +78,7 @@ persetujuanData.addEventListener('change', () => {
         window.turnstile.remove(captchaWidgetId);
         captchaWidgetId = null;
     }
-    statusPengiriman.textContent = 'Nama dan umur tidak akan disimpan. Kamu tetap bisa membuat kartu.';
+    statusPengiriman.textContent = 'Harus mencentang persetujuan untuk menyimpan data sebelum menampilkan kejutan.';
 });
 inputTema.addEventListener('change', () => {
     document.body.dataset.theme = inputTema.value;
@@ -197,33 +197,33 @@ tombolEdit.addEventListener('click', () => {
 
 tombolLanjut.addEventListener('click', async () => {
     if (isSubmitting || !details) return;
-    if (persetujuanData.checked && !captchaToken) {
+    if (!persetujuanData.checked) {
+        statusPengiriman.textContent = 'Harus mencentang persetujuan untuk menyimpan data sebelum menampilkan kejutan.';
+        updateRevealButton();
+        return;
+    }
+    if (!captchaToken) {
         statusPengiriman.textContent = 'Selesaikan verifikasi anti-spam sebelum melanjutkan.';
+        updateRevealButton();
         return;
     }
 
     isSubmitting = true;
     tombolLanjut.disabled = true;
-    statusPengiriman.textContent = persetujuanData.checked
-        ? 'Memverifikasi dan menyimpan data...'
-        : 'Data tidak disimpan; menyiapkan kejutan...';
+    statusPengiriman.textContent = 'Memverifikasi dan menyimpan data...';
 
-    if (persetujuanData.checked) {
-        try {
-            await simpanPenggunaan(details, captchaToken);
-        } catch (error) {
-            console.error('Gagal mengirim data penggunaan:', error);
-            statusPengiriman.textContent = error.message;
-            isSubmitting = false;
-            captchaToken = '';
-            if (window.turnstile && captchaWidgetId !== null) {
-                window.turnstile.reset(captchaWidgetId);
-            }
-            updateRevealButton();
-            return;
-        }
-    } else {
+    try {
+        await simpanPenggunaan(details, captchaToken);
+    } catch (error) {
+        console.error('Gagal mengirim data penggunaan:', error);
+        statusPengiriman.textContent = error.message;
         isSubmitting = false;
+        captchaToken = '';
+        if (window.turnstile && captchaWidgetId !== null) {
+            window.turnstile.reset(captchaWidgetId);
+        }
+        updateRevealButton();
+        return;
     }
 
     isSubmitting = false;
@@ -339,7 +339,7 @@ function loadTurnstileScript() {
 }
 
 function updateRevealButton() {
-    tombolLanjut.disabled = isSubmitting || (persetujuanData.checked && !captchaToken);
+    tombolLanjut.disabled = isSubmitting || !persetujuanData.checked || !captchaToken;
 }
 
 function updateMusicButton() {

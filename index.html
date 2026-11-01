@@ -3,52 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday, Teh Ia!</title>
-    
-    <link rel="stylesheet" href="style.css">
-    
+    <meta name="theme-color" content="#160f27">
+    <title>Kartu Ucapan Ulang Tahun</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
-<body>
+<body data-theme="rose">
+    <audio id="lagu-ultah" src="assets/audio/braja.mp3" loop></audio>
 
-    <audio id="sfx-klik" src="klik.mp3"></audio>
-    <audio id="lagu-ultah" src="braja.mp3" loop></audio>
-
-    <div id="loading" class="container active">
-        <div class="big-text" style="font-size: 2rem;">Tunggu bentar...</div>
+    <div id="loading" class="container" role="status" aria-live="polite">
+        <div class="big-text">Tunggu sebentar...</div>
     </div>
 
-    <div id="countdown" class="container">
+    <div id="countdown" class="container" role="status" aria-live="polite">
         <div id="angka-count" class="big-text">3</div>
     </div>
 
-    <div id="main-content" class="container">
-        
-        <img src="yulia.jpg" alt="yulia" class="photo-frame" id="foto">
-        
-        <button id="tombol-buka" class="pulse">Buka Pesan 💌</button>
-        
-        <div id="form-umur" class="hidden">
-            <p style="margin-bottom: 15px; font-size: 1.2rem;">bentar, umur teteh sekarang berapa nih? 👀</p>
-            <input type="number" id="input-umur" placeholder="Ketik angka..." min="1">
-            <br>
-            <button id="tombol-lanjut">Lanjut ✨</button>
-        </div>
-        
-        <h1 id="judul"></h1>
-        
-        <div id="pesan-wrapper" class="hidden">
-            <div class="pesan-teks">Selamat Ulang Tahun! 🎉</div>
-            <div class="pesan-teks">Selamat bertambah umur, Teh Ia! 🎈
-Semoga kebahagiaan selalu ngelilingin Teteh dan Caca setiap hari. Apapun fase hidup yang lagi Teteh lewatin sekarang, percayalah Teteh nggak pernah sendirian. Keluarga bakal selalu jadi tempat Teteh pulang.
-Semoga makin sukses, makin bersinar, dan apa yang dicita-citakan segera terwujud. Amin! 🌟.</div>
-            <div class="pesan-teks">Semoga teteh rajin solat dan selalu berdoa kepada allah agar dilancarkan urusanya. <b>SEMOGA MAKIN SUKSES</b>!</div>
-            <div class="pesan-teks quote">"Hari ini adalah awal dari petualangan 365 hari barumu. Make it count!" ✨</div>
+    <main id="main-content" class="container active">
+        <div class="preferences" role="group" aria-label="Pengaturan tampilan">
+            <button id="tombol-musik" type="button" aria-pressed="false">♫ Musik: mati</button>
+            <button id="tombol-animasi" type="button" aria-pressed="true">✨ Animasi: nyala</button>
         </div>
 
-        <button id="tombol-replay" class="hidden">Lihat Lagi 🔄</button>
-    </div>
+        <p class="eyebrow">Momen spesial, ucapan spesial</p>
+        <h1 class="page-title">Bikin seseorang tersenyum hari ini</h1>
+        <p class="intro">Personalisasi kartu ulang tahun, lihat pratinjaunya, lalu bagikan dengan orang tersayang.</p>
 
+        <button id="tombol-buka" class="pulse" type="button">Mulai Bikin Ucapan 💌</button>
+
+        <form id="form-personalisasi" class="hidden">
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="input-nama">Nama yang berulang tahun</label>
+                    <input type="text" id="input-nama" placeholder="Contoh: Nadia" maxlength="50" autocomplete="name" required>
+                </div>
+                <div class="form-field">
+                    <label for="input-umur">Umurnya</label>
+                    <input type="number" id="input-umur" placeholder="Contoh: 25" min="1" max="120" step="1" required>
+                </div>
+                <div class="form-field">
+                    <label for="input-hubungan">Hubunganmu dengannya</label>
+                    <select id="input-hubungan">
+                        <option value="sahabat">Sahabat</option>
+                        <option value="teman">Teman</option>
+                        <option value="kakak">Kakak</option>
+                        <option value="adik">Adik</option>
+                        <option value="pasangan">Pasangan</option>
+                        <option value="orang_tua">Orang tua</option>
+                        <option value="keluarga">Keluarga</option>
+                        <option value="spesial">Orang spesial</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label for="input-gaya">Gaya ucapan</label>
+                    <select id="input-gaya">
+                        <option value="manis">Manis dan hangat</option>
+                        <option value="lucu">Lucu dan ceria</option>
+                        <option value="islami">Doa Islami</option>
+                        <option value="formal">Elegan dan formal</option>
+                        <option value="singkat">Singkat dan tulus</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label for="input-tema">Tema kartu</label>
+                    <select id="input-tema">
+                        <option value="rose">Rose romantis</option>
+                        <option value="ocean">Biru lautan</option>
+                        <option value="sunshine">Cerah ceria</option>
+                        <option value="garden">Taman bunga</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label for="input-foto">Foto (opsional, maksimal 5 MB)</label>
+                    <input type="file" id="input-foto" accept="image/*" aria-describedby="info-foto">
+                    <p id="info-foto" class="form-hint">Foto hanya diproses di perangkatmu, tidak diunggah.</p>
+                </div>
+            </div>
+            <button id="tombol-pratinjau" class="primary-button" type="submit">Lihat Pratinjau ✨</button>
+        </form>
+
+        <section id="preview-panel" class="hidden" aria-labelledby="preview-title">
+            <h2 id="preview-title">Pratinjau kartu ucapan</h2>
+            <article id="kartu-ucapan" class="greeting-card">
+                <div id="foto-placeholder" class="photo-placeholder" aria-hidden="true">🎂</div>
+                <img alt="" class="card-photo hidden" id="foto">
+                <p id="preview-hubungan" class="card-kicker"></p>
+                <h3 id="preview-judul"></h3>
+                <p id="preview-pesan"></p>
+                <p id="preview-doa" class="card-prayer"></p>
+                <p id="preview-umur" class="card-age"></p>
+            </article>
+
+            <div class="card-actions">
+                <button id="tombol-edit" type="button">← Edit detail</button>
+                <button id="tombol-unduh" type="button">Unduh kartu PNG</button>
+                <button id="tombol-bagikan" type="button">Bagikan</button>
+            </div>
+
+            <div class="consent-box">
+                <label class="consent-option" for="persetujuan-data">
+                    <input type="checkbox" id="persetujuan-data">
+                    <span>(Opsional) Saya punya izin untuk mengirim data ini dan setuju nama serta umur disimpan di Supabase untuk catatan penggunaan. Kalau tidak dicentang, data tidak disimpan dan kartu tetap bisa dibuat.</span>
+                </label>
+            </div>
+
+            <div id="captcha-section" class="captcha-section hidden">
+                <p class="form-hint">Untuk menyimpan data, selesaikan verifikasi anti-spam Cloudflare Turnstile.</p>
+                <div id="turnstile-widget"></div>
+            </div>
+            <p id="status-pengiriman" class="form-hint status-message" role="status" aria-live="polite"></p>
+            <button id="tombol-lanjut" class="primary-button" type="button">Tampilkan Kejutan 🎉</button>
+        </section>
+
+        <section id="birthday-output" class="hidden" aria-live="polite">
+            <div id="kartu-hasil" class="greeting-card">
+                <div id="foto-placeholder-hasil" class="photo-placeholder" aria-hidden="true">🎂</div>
+                <img alt="" class="card-photo hidden" id="foto-hasil">
+                <p id="hasil-hubungan" class="card-kicker"></p>
+                <h2 id="judul"></h2>
+                <p id="pesan-selamat" class="result-message"></p>
+                <p id="pesan-harapan" class="result-message"></p>
+                <p id="pesan-doa" class="result-message"></p>
+                <p id="pesan-quote" class="result-message quote"></p>
+            </div>
+            <div class="card-actions">
+                <button id="tombol-unduh-hasil" type="button">Unduh kartu PNG</button>
+                <button id="tombol-bagikan-hasil" type="button">Bagikan</button>
+                <button id="tombol-replay" type="button">Buat kartu lain ↻</button>
+            </div>
+        </section>
+        <p id="status-aksi" class="form-hint status-message" role="status" aria-live="polite"></p>
+    </main>
+
+    <script src="assets/js/supabase-config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
